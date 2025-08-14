@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="lms.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2044"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="employees" custom_title="0" dock_id="3" table="4,9:mainemployees"/><dock_state state="000000ff00000000fd0000000100000002000002480000020bfc0100000003fb000000160064006f0063006b00420072006f00770073006500310100000000000002480000000000000000fb000000160064006f0063006b00420072006f00770073006500320100000000000002480000000000000000fb000000160064006f0063006b00420072006f00770073006500330100000000000002480000011800ffffff000002480000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="employees" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="29"/><column index="2" value="101"/><column index="3" value="148"/><column index="4" value="93"/><column index="5" value="85"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1*">-- Employees table
+CREATE TABLE IF NOT EXISTS employees (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    department TEXT NOT NULL,
+    joining_date TEXT NOT NULL
+);
+
+-- Leaves table
+CREATE TABLE IF NOT EXISTS leaves (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    employee_id INTEGER NOT NULL,
+    start_date TEXT NOT NULL,
+    end_date TEXT NOT NULL,
+    reason TEXT NOT NULL,
+    days INTEGER NOT NULL,
+    status TEXT NOT NULL DEFAULT 'PENDING',
+    approved_by INTEGER,
+    approved_at TEXT,
+    approval_comment TEXT,
+    FOREIGN KEY (employee_id) REFERENCES employees(id)
+);
+
+-- Leave balances table
+CREATE TABLE IF NOT EXISTS leave_balances (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    employee_id INTEGER NOT NULL,
+    year INTEGER NOT NULL,
+    entitlement INTEGER NOT NULL DEFAULT 30, -- total leaves allowed per year
+    used INTEGER NOT NULL DEFAULT 0, -- leaves already taken
+    FOREIGN KEY (employee_id) REFERENCES employees(id)
+);
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
